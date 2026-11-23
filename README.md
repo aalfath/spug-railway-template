@@ -33,7 +33,8 @@ default password.
    Railway) and start using batch execution, deployments, scheduled tasks and monitoring.
 
 Optional, set in Spug's own **System settings**: email, DingTalk/WeCom/Feishu or webhook alerts,
-LDAP login and two-factor login. Five wrong passwords disable an account; re-enable it with
+LDAP login and two-factor login. Four wrong passwords within a day disable an account (upstream
+behaviour); re-enable it with
 `python3 manage.py user enable -u admin` in `/data/spug/spug_api` from the Railway shell.
 
 ## Variables
