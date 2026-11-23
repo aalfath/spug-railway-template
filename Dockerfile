@@ -23,6 +23,9 @@ RUN chmod 755 /usr/local/bin/railway-start.sh /usr/local/bin/fatal-listener.py \
     && grep -q '^maxmemory 96mb' /etc/redis.conf \
     && grep -q '^worker_processes 2;' /etc/nginx/nginx.conf.orig
 
-ENV PORT=80
+# Five Django processes share the 0.5 GB of Railway's smallest plan: fewer malloc arenas keep
+# their threaded memory growth down.
+ENV PORT=80 \
+    MALLOC_ARENA_MAX=2
 EXPOSE 80
 ENTRYPOINT ["/usr/local/bin/railway-start.sh"]
