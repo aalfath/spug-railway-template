@@ -10,6 +10,9 @@ import logging, os, sys, threading, traceback
 os.chdir('/data/spug/spug_api')
 sys.path.insert(0, '/data/spug/spug_api')
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'spug.settings')
+# upstream sizes the job thread pool as max(100, os.cpu_count() * 50); on Railway cpu_count is the
+# host's (dozens), not the service's vCPUs, so count SPUG_CPUS (default 1) instead
+os.cpu_count = lambda: int(os.environ.get('SPUG_CPUS') or 1)
 import django  # noqa: E402
 django.setup()
 logging.basicConfig(level=logging.WARNING, format='%(asctime)s %(message)s')
