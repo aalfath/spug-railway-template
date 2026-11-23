@@ -8,11 +8,12 @@ FROM openspug/spug:4.1.2@sha256:d60b06ca87e80bdf98a47aac0d1252d2c04ab47bc7f1256c
 COPY supervisord.conf /etc/supervisord.conf
 COPY start.sh /usr/local/bin/railway-start.sh
 COPY fatal-listener.py /usr/local/bin/fatal-listener.py
+COPY spug-background.py /usr/local/bin/spug-background.py
 
 # Small-plan sizing: nginx workers and the API's gunicorn workers follow env vars instead of the
 # host's CPU count, and the in-container Redis (cache and console streams only) is capped at 96 MB.
 # First-run migrations are written to a file (printed only on failure) to stay under Railway's log rate limit.
-RUN chmod 755 /usr/local/bin/railway-start.sh /usr/local/bin/fatal-listener.py \
+RUN chmod 755 /usr/local/bin/railway-start.sh /usr/local/bin/fatal-listener.py /usr/local/bin/spug-background.py \
     && sed -i 's/^worker_processes auto;/worker_processes 2;/' /etc/nginx/nginx.conf \
     && cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.orig \
     && sed -i 's/^maxmemory 2GB/maxmemory 96mb/' /etc/redis.conf \
